@@ -13,7 +13,7 @@ namespace ProjetHopital
         public List<Patient> SelectAll()
         {
             List<Patient> liste = new List<Patient>();
-            string connexionString = @"Data Source=PC-YOANN-23\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
+            string connexionString = InfoSql.CONNEXION_INFO;
             string sql = "select * from patient";
 
             SqlConnection connexion = new SqlConnection(connexionString);
@@ -32,11 +32,11 @@ namespace ProjetHopital
             connexion.Close();
             return liste;
         }
-        public Patient SelectByRef(int id)
+        public Patient SelectById(int id)
         {
             Patient p = new Patient();
-            string connexionString = @"Data Source=PC-YOANN-23\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
-            string sql = "select * from articles where id=" + id;
+            string connexionString = InfoSql.CONNEXION_INFO;
+            string sql = "select * from patient where id=" + id;
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -47,8 +47,7 @@ namespace ProjetHopital
 
             if (reader.Read())
             {
-                //result += reader["reference"] + "\t" + reader["marque"]
-                //   + "\t" + reader["prix"] + "\n";
+               
                 p = new Patient(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
                                  reader.GetInt32(3), reader.GetString(4), reader.GetString(5));
             }
@@ -57,40 +56,40 @@ namespace ProjetHopital
         }
         public void Insert(Patient p)
         {
-            string connexionString = @"Data Source=PC-YOANN-23\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
-            string sql = "insert into articles values (@reference,@marque,@prix)";
+            string connexionString = InfoSql.CONNEXION_INFO;
+            string sql = "insert into patient values (@id,@nom,@prenom,@age,@adresse,@telephone)";
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
             command.CommandText = sql;
-            command.Parameters.Add("reference", SqlDbType.Int).Value = p.Id;
-            command.Parameters.Add("marque", SqlDbType.NVarChar).Value = p.Nom;
-            command.Parameters.Add("prix", SqlDbType.NVarChar).Value = p.Prenom;
-            command.Parameters.Add("prix", SqlDbType.NVarChar).Value = p.Age;
-            command.Parameters.Add("prix", SqlDbType.NVarChar).Value = p.Adresse;
-            command.Parameters.Add("prix", SqlDbType.NVarChar).Value = p.Telephone;
+            command.Parameters.Add("id", SqlDbType.Int).Value = p.Id;
+            command.Parameters.Add("nom", SqlDbType.NVarChar).Value = p.Nom;
+            command.Parameters.Add("prenom", SqlDbType.NVarChar).Value = p.Prenom;
+            command.Parameters.Add("age", SqlDbType.NVarChar).Value = p.Age;
+            command.Parameters.Add("adresse", SqlDbType.NVarChar).Value = p.Adresse;
+            command.Parameters.Add("telephone", SqlDbType.NVarChar).Value = p.Telephone;
 
             connexion.Open();
             // Excecution de la requête
             command.ExecuteNonQuery();
-            Console.WriteLine("Insertion article ok");
+            Console.WriteLine("Insertion Patient ok");
             connexion.Close();
         }
 
         public void Update(Patient p)
         {
-            string connexionString = @"Data Source=PC-YOANN-23\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
-            string sql = "update articles set marque=@marque ,prix=@prix where reference=@reference";
+            string connexionString = InfoSql.CONNEXION_INFO;
+            string sql = "update patient set nom=@nom ,prenom=@prenom, age=@age, adresse=@adresse, telephone=@telephone where id=@id";
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
             command.CommandText = sql;
-            command.Parameters.Add("reference", SqlDbType.Int).Value = p.Id;
-            command.Parameters.Add("marque", SqlDbType.NVarChar).Value = p.Nom;
-            command.Parameters.Add("prix", SqlDbType.NVarChar).Value = p.Prenom;
-            command.Parameters.Add("prix", SqlDbType.NVarChar).Value = p.Age;
-            command.Parameters.Add("prix", SqlDbType.NVarChar).Value = p.Adresse;
-            command.Parameters.Add("prix", SqlDbType.NVarChar).Value = p.Telephone;
+            command.Parameters.Add("id", SqlDbType.Int).Value = p.Id;
+            command.Parameters.Add("nom", SqlDbType.NVarChar).Value = p.Nom;
+            command.Parameters.Add("prenom", SqlDbType.NVarChar).Value = p.Prenom;
+            command.Parameters.Add("age", SqlDbType.NVarChar).Value = p.Age;
+            command.Parameters.Add("adresse", SqlDbType.NVarChar).Value = p.Adresse;
+            command.Parameters.Add("telephone", SqlDbType.NVarChar).Value = p.Telephone;
 
             connexion.Open();
             // Excecution de la requête
@@ -102,8 +101,8 @@ namespace ProjetHopital
 
         public void Delete(int id)
         {
-            string connexionString = @"Data Source=PC-YOANN-23\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
-            string sql = "delete from articles where id=" + id;
+            string connexionString = InfoSql.CONNEXION_INFO;
+            string sql = "delete from patient where id=" + id;
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
