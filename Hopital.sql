@@ -1,5 +1,7 @@
 CREATE DATABASE Hopital;
 
+Use Hopital;
+    
 CREATE TABLE patients (
     id INT PRIMARY KEY IDENTITY(1,1),
     nom NVARCHAR(50),
@@ -29,7 +31,7 @@ CREATE TABLE authentification (
 
 INSERT INTO patients (nom, prenom, age, adresse, telephone) VALUES
 ('Wayne', 'Bruce', 30, '1 rue Je sais pas', '0612345678'),
-('Kent', 'Clark', 40, '18 rue ou ça', '0625840335'),
+('Kent', 'Clark', 40, '18 rue ou Ã§a', '0625840335'),
 ('Wonka', 'Willy', 25, '23 par ici', '0604128549');
 
 
