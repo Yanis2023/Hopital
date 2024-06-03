@@ -8,6 +8,6 @@ namespace ProjetHopital
 {
     public class InfoSql
     {
-        public const string CONNEXION_INFO = @"Data Source=PC-ASUS-YANIS\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
+        public const string CONNEXION_INFO = @"Data Source=PC-YOANN-23\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
     }
 }

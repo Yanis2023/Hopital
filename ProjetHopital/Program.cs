@@ -44,9 +44,9 @@ namespace ProjetHopital
             {
                 Console.WriteLine("1 - Rajouter un patient\n2 - Sauvegarder la liste d'attente\n3 - Charger la liste d'attente\n" +
                     "4 - Nouvelle journée\n5 - Afficher les visites d'un patient\n6 - Afficher toutes les visites\n" +
-                    "7 - Afficher toutes les visites d'un médecin\n8 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
-                while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 8)) ;
-                if (choix == 8)
+                    "7 - Afficher toutes les visites d'un médecin\n8 - Mettre à jour les données d'un patient -  Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
+                while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 9)) ;
+                if (choix == 9)
                     break;
 
                 switch (choix)
@@ -64,13 +64,15 @@ namespace ProjetHopital
                         
                         break;
                     case 5:
-                        
+                        AfficherVisitesPatient();
                         break;
                     case 6:
                         
                         break;
                     case 7:
-                        
+                        break;
+                    case 8:               
+                        MettreAJourPatient();
                         break;
                 }
             }
@@ -158,16 +160,36 @@ namespace ProjetHopital
             throw new NotImplementedException();
         }
 
-        private static void MettreAJourPatient()
-        {
-            //TODO
-            throw new NotImplementedException();
+        public static void MettreAJourPatient()
+        {       
+            Console.WriteLine("Saisissez un identifiant : ");
+            int id = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Saisissez le nouveau numéro de téléphone : ");
+            string telephone = Console.ReadLine();
+            Console.WriteLine("Saisissez la nouvelle adresse : ");
+            string adresse = Console.ReadLine();
+
+            DaoPatient daoPatient = new DaoPatient();
+            Patient p = new Patient();
+
+            p = daoPatient.SelectById(id);
+            if(telephone != "")
+                p.Telephone = telephone;
+            if(adresse != "")
+                p.Adresse = adresse;
+           
+            daoPatient.Update(p);
         }
 
         private static void AfficherVisitesPatient()
         {
-            //TODO
-            throw new NotImplementedException();
+            Console.WriteLine("Saisissez un identifiant : ");
+            int id = Convert.ToInt32(Console.ReadLine());
+          
+            DaoVisite daoVisite = new DaoVisite();
+           
+            Console.WriteLine(daoVisite.SelectByIdPatient(id).ToString());
+                  
         }
 
 

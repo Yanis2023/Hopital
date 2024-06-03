@@ -27,12 +27,36 @@ namespace ProjetHopital
 
             while (reader.Read())
             {
-                liste.Add(new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3),
+                liste.Add(new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
                                  reader.GetInt32(4), reader.GetDecimal(5)));
             }
 
             connexion.Close();
             return liste;
+        }
+        public Visite SelectByIdPatient(int idPatient)
+        {
+            Visite v = new Visite();
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT * FROM visites WHERE idPatient=" + idPatient;
+
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+
+                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3),
+                                 reader.GetInt32(4), reader.GetDecimal(5));
+            }
+            connexion.Close();
+            return v;
         }
         public Visite SelectById(int id)
         {
