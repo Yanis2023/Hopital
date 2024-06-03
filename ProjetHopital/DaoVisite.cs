@@ -15,7 +15,7 @@ namespace ProjetHopital
             List<Visite> liste = new List<Visite>();
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "select * from visites";
+            string sql = "USE Hopital;SELECT * FROM visites";
 
 
             SqlConnection connexion = new SqlConnection(connexionString);
@@ -39,7 +39,7 @@ namespace ProjetHopital
             Visite v = new Visite();
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "select * from visites where id=" + id;
+            string sql = "USE Hopital;SELECT * FROM visites WHERE id=" + id;
 
 
             SqlConnection connexion = new SqlConnection(connexionString);
@@ -62,7 +62,7 @@ namespace ProjetHopital
         {
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "insert into visites values (@idPatient,@nomMedecin,@date,@numSalle,@tarif)";
+            string sql = "USE Hopital;INSERT INTO visites VALUES (@idPatient,@nomMedecin,@date,@numSalle,@tarif)";
 
 
             SqlConnection connexion = new SqlConnection(connexionString);
@@ -86,7 +86,7 @@ namespace ProjetHopital
         {
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "update visites set idPatient=@idPatient ,nomMedecin=@nomMedecin, date=@date, numSalle=@numSalle, tarif=@tarif where idVisite=@idVisite";
+            string sql = "USE Hopital;UPDATE visites SET idPatient=@idPatient ,nomMedecin=@nomMedecin, date=@date, numSalle=@numSalle, tarif=@tarif WHERE idVisite=@idVisite";
 
 
             SqlConnection connexion = new SqlConnection(connexionString);
@@ -111,7 +111,7 @@ namespace ProjetHopital
         {
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "delete from visites where id=" + id;
+            string sql = "USE Hopital;DELETE FROM visites WHERE id=" + id;
 
 
             SqlConnection connexion = new SqlConnection(connexionString);
