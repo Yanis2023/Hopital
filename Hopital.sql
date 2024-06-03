@@ -1,6 +1,26 @@
-CREATE DATABASE Hopital;
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'Hopital')
+BEGIN
+    DROP DATABASE Hopital;
+END;
+GO
 
-Use Hopital;
+CREATE DATABASE Hopital;
+GO
+
+USE Hopital;
+GO
+
+IF OBJECT_ID('dbo.Visites', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE dbo.Visites;
+END;
+GO
+
+IF OBJECT_ID('dbo.Patients', 'U') IS NOT NULL
+BEGIN
+    DROP TABLE dbo.Patients;
+END;
+GO
     
 CREATE TABLE patients (
     id INT PRIMARY KEY IDENTITY(1,1),
@@ -44,3 +64,5 @@ INSERT INTO authentification (login, password, nom, metier) VALUES
 ('secretaire', 'secretaire123', 'Secretaire', 0),
 ('medecin1', 'medecin123', 'Dr. Maboul', 1),
 ('medecin2', 'medecin123', 'Dr. Who', 2);
+
+
