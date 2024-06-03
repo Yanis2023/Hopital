@@ -14,7 +14,9 @@ namespace ProjetHopital
         {
             List<Visite> liste = new List<Visite>();
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "select * from visite";
+
+            string sql = "USE Hopital;SELECT * FROM visites";
+
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -36,7 +38,9 @@ namespace ProjetHopital
         {
             Visite v = new Visite();
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "select * from visite where id=" + id;
+
+            string sql = "USE Hopital;SELECT * FROM visites WHERE id=" + id;
+
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -57,7 +61,9 @@ namespace ProjetHopital
         public void Insert(Visite v)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "insert into visite values (@idPatient,@nomMedecin,@date,@age,@numSalle,@tarif)";
+
+            string sql = "USE Hopital;INSERT INTO visites VALUES (@idPatient,@nomMedecin,@date,@numSalle,@tarif)";
+
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
@@ -67,7 +73,7 @@ namespace ProjetHopital
             command.Parameters.Add("date", SqlDbType.Date).Value = v.Date;
             command.Parameters.Add("numSalle", SqlDbType.Int).Value = v.NumSalle;
             command.Parameters.Add("tarif", SqlDbType.Decimal).Value = v.Tarif;
-          
+
 
             connexion.Open();
             // Excecution de la requête
@@ -79,7 +85,9 @@ namespace ProjetHopital
         public void Update(Visite v)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "update visite set idPatient=@idPatient ,nomMedecin=@nomMedecin, date=@date, numSalle=@numSalle, tarif=@tarif where idVisite=@idVisite";
+
+            string sql = "USE Hopital;UPDATE visites SET idPatient=@idPatient ,nomMedecin=@nomMedecin, date=@date, numSalle=@numSalle, tarif=@tarif WHERE idVisite=@idVisite";
+
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
@@ -102,7 +110,9 @@ namespace ProjetHopital
         public void Delete(int id)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "delete from visite where id=" + id;
+
+            string sql = "USE Hopital;DELETE FROM visites WHERE id=" + id;
+
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);

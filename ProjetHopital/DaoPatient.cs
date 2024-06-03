@@ -14,7 +14,7 @@ namespace ProjetHopital
         {
             List<Patient> liste = new List<Patient>();
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "select * from patients";
+            string sql = "USE Hopital;SELECT * FROM patients";
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -36,7 +36,8 @@ namespace ProjetHopital
         {
             Patient p = new Patient();
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "use Hopital; select * from patients where id=" + id;
+
+            string sql = "USE Hopital;SELECT * FROM patients WHERE id=" + id;
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -47,7 +48,7 @@ namespace ProjetHopital
 
             if (reader.Read())
             {
-               
+
                 p = new Patient(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
                                  reader.GetInt32(3), reader.GetString(4), reader.GetString(5));
             }
@@ -57,28 +58,31 @@ namespace ProjetHopital
         public void Insert(Patient p)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "use Hopital; insert into patients values (@nom,@prenom,@age,@adresse,@telephone)";
+
+            string sql = "USE Hopital;INSERT INTO patients VALUES (@nom,@prenom,@age,@adresse,@telephone)";
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
-            command.CommandText = sql;
+            command.CommandText = sql;         
             command.Parameters.Add("nom", SqlDbType.NVarChar).Value = p.Nom;
             command.Parameters.Add("prenom", SqlDbType.NVarChar).Value = p.Prenom;
-            command.Parameters.Add("age", SqlDbType.NVarChar).Value = p.Age;
+            command.Parameters.Add("age", SqlDbType.Int).Value = p.Age;
             command.Parameters.Add("adresse", SqlDbType.NVarChar).Value = p.Adresse;
             command.Parameters.Add("telephone", SqlDbType.NVarChar).Value = p.Telephone;
 
             connexion.Open();
             // Excecution de la requête
             command.ExecuteNonQuery();
-            Console.WriteLine("Insertion Patient ok");
+
+            Console.WriteLine("Insertion patient ok");
+
             connexion.Close();
         }
 
         public void Update(Patient p)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "update patients set nom=@nom ,prenom=@prenom, age=@age, adresse=@adresse, telephone=@telephone where id=@id";
+            string sql = "USE Hopital;UPDATE patients SET nom=@nom ,prenom=@prenom, age=@age, adresse=@adresse, telephone=@telephone WHERE id=@id";
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
@@ -101,7 +105,7 @@ namespace ProjetHopital
         public void Delete(int id)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "delete from patients where id=" + id;
+            string sql = "USE Hopital;DELETE FROM patients WHERE id=" + id;
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
