@@ -14,7 +14,11 @@ namespace ProjetHopital
         {
             List<Visite> liste = new List<Visite>();
             string connexionString = InfoSql.CONNEXION_INFO;
+<<<<<<< HEAD
             string sql = "select * from visites";
+=======
+            string sql = "select * from visite";
+>>>>>>> 6430c68c59b133e743f8e5038e36b3ae13e35a0b
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -36,7 +40,11 @@ namespace ProjetHopital
         {
             Visite v = new Visite();
             string connexionString = InfoSql.CONNEXION_INFO;
+<<<<<<< HEAD
             string sql = "select * from visites where id=" + id;
+=======
+            string sql = "select * from visite where id=" + id;
+>>>>>>> 6430c68c59b133e743f8e5038e36b3ae13e35a0b
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -57,7 +65,11 @@ namespace ProjetHopital
         public void Insert(Visite v)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
+<<<<<<< HEAD
             string sql = "insert into visites values (@idPatient,@nomMedecin,@date,@numSalle,@tarif)";
+=======
+            string sql = "insert into visite values (@idPatient,@nomMedecin,@date,@age,@numSalle,@tarif)";
+>>>>>>> 6430c68c59b133e743f8e5038e36b3ae13e35a0b
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
@@ -67,7 +79,11 @@ namespace ProjetHopital
             command.Parameters.Add("date", SqlDbType.Date).Value = v.Date;
             command.Parameters.Add("numSalle", SqlDbType.Int).Value = v.NumSalle;
             command.Parameters.Add("tarif", SqlDbType.Decimal).Value = v.Tarif;
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> 6430c68c59b133e743f8e5038e36b3ae13e35a0b
 
             connexion.Open();
             // Excecution de la requête
@@ -79,7 +95,11 @@ namespace ProjetHopital
         public void Update(Visite v)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
+<<<<<<< HEAD
             string sql = "update visites set idPatient=@idPatient ,nomMedecin=@nomMedecin, date=@date, numSalle=@numSalle, tarif=@tarif where idVisite=@idVisite";
+=======
+            string sql = "update visite set idPatient=@idPatient ,nomMedecin=@nomMedecin, date=@date, numSalle=@numSalle, tarif=@tarif where idVisite=@idVisite";
+>>>>>>> 6430c68c59b133e743f8e5038e36b3ae13e35a0b
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
@@ -102,7 +122,11 @@ namespace ProjetHopital
         public void Delete(int id)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
+<<<<<<< HEAD
             string sql = "delete from visites where id=" + id;
+=======
+            string sql = "delete from visite where id=" + id;
+>>>>>>> 6430c68c59b133e743f8e5038e36b3ae13e35a0b
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);

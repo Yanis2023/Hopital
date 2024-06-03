@@ -47,7 +47,6 @@
     <Compile Include="DaoAuthentification.cs" />
     <Compile Include="DaoPatient.cs" />
     <Compile Include="DaoVisite.cs" />
-    <Compile Include="Hopital.cs" />
     <Compile Include="InfoSql.cs" />
     <Compile Include="Patient.cs" />
     <Compile Include="Program.cs" />
