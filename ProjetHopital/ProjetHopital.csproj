@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentification.cs" />
+    <Compile Include="Hopital.cs" />
     <Compile Include="DaoAuthentification.cs" />
     <Compile Include="DaoPatient.cs" />
     <Compile Include="DaoVisite.cs" />
