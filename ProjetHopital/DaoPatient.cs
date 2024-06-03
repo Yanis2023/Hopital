@@ -14,7 +14,7 @@ namespace ProjetHopital
         {
             List<Patient> liste = new List<Patient>();
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "select * from patient";
+            string sql = "select * from patients";
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -36,7 +36,7 @@ namespace ProjetHopital
         {
             Patient p = new Patient();
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "select * from patient where id=" + id;
+            string sql = "use Hopital; select * from patients where id=" + id;
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -57,12 +57,11 @@ namespace ProjetHopital
         public void Insert(Patient p)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "insert into patient values (@id,@nom,@prenom,@age,@adresse,@telephone)";
+            string sql = "use Hopital; insert into patients values (@nom,@prenom,@age,@adresse,@telephone)";
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
             command.CommandText = sql;
-            command.Parameters.Add("id", SqlDbType.Int).Value = p.Id;
             command.Parameters.Add("nom", SqlDbType.NVarChar).Value = p.Nom;
             command.Parameters.Add("prenom", SqlDbType.NVarChar).Value = p.Prenom;
             command.Parameters.Add("age", SqlDbType.NVarChar).Value = p.Age;
@@ -79,7 +78,7 @@ namespace ProjetHopital
         public void Update(Patient p)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "update patient set nom=@nom ,prenom=@prenom, age=@age, adresse=@adresse, telephone=@telephone where id=@id";
+            string sql = "update patients set nom=@nom ,prenom=@prenom, age=@age, adresse=@adresse, telephone=@telephone where id=@id";
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
@@ -94,7 +93,7 @@ namespace ProjetHopital
             connexion.Open();
             // Excecution de la requête
             command.ExecuteNonQuery();
-            Console.WriteLine("Mise à jour Patient ok");
+            Console.WriteLine("Mise à jour Patients ok");
             //Console.WriteLine(sql);
             connexion.Close();
         }
@@ -102,7 +101,7 @@ namespace ProjetHopital
         public void Delete(int id)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
-            string sql = "delete from patient where id=" + id;
+            string sql = "delete from patients where id=" + id;
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
@@ -111,7 +110,7 @@ namespace ProjetHopital
 
             // execution de la requete
             command.ExecuteNonQuery();
-            Console.WriteLine("Suppression patient ok");
+            Console.WriteLine("Suppression patients ok");
 
             connexion.Close();
 

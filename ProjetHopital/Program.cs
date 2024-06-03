@@ -56,26 +56,39 @@ namespace ProjetHopital
             Console.WriteLine("Veuillez saisir un identifiant:");
             int id;
             while (!Int32.TryParse(Console.ReadLine(), out id));
+            Patient p = (new DaoPatient()).SelectById(id);
             //TODO check si id existe dans la db
-            Console.WriteLine("Veuillez saisir le nom:");
-            string nom = Console.ReadLine();
-            Console.WriteLine("Veuillez saisir le prénom:");
-            string prenom = Console.ReadLine();
-            Console.WriteLine("Veuillez saisir l'age du patient");
-            int age;
-            while (!Int32.TryParse(Console.ReadLine(), out age) && age < 0) ;
-            Console.WriteLine("Voulez vous renseigner l'adresse et le numéro de téléphone du patient ? o/n");
-            char choice;
-            while (!Char.TryParse(Console.ReadLine(), out choice));
-            if (choice == 'o' || choice == 'O')
+            if (p.Id == id)
+                Console.WriteLine("Patient: [" + p + "]");
+            else
             {
-                Console.WriteLine("Veuillez saisir l'adresse");
-                string adresse = Console.ReadLine();
-                Console.WriteLine("Veuillez saisir le numéro de téléphone");
-                int tel;
-                while (!Int32.TryParse(Console.ReadLine(), out tel) && tel.ToString().Length != 9) ;
+                Console.WriteLine("Veuillez saisir le nom:");
+                p.Nom = Console.ReadLine();
+                Console.WriteLine("Veuillez saisir le prénom:");
+                p.Prenom = Console.ReadLine();
+                Console.WriteLine("Veuillez saisir l'age du patient");
+                int age;
+                while (!Int32.TryParse(Console.ReadLine(), out age) && age < 0) ;
+                p.Age = age;
+                Console.WriteLine("Voulez vous renseigner l'adresse et le numéro de téléphone du patient ? o/n");
+                char choice;
+                while (!Char.TryParse(Console.ReadLine(), out choice)) ;
+                if (choice == 'o' || choice == 'O')
+                {
+                    Console.WriteLine("Veuillez saisir l'adresse");
+                    p.Adresse = Console.ReadLine();
+                    Console.WriteLine("Veuillez saisir le numéro de téléphone");
+                    int tel;
+                    while (!Int32.TryParse(Console.ReadLine(), out tel) && tel.ToString().Length != 9) ;
+                    p.Telephone = "0" + tel.ToString();
+                }
+                else
+                {
+                    p.Adresse = "";
+                    p.Telephone = "";
+                }
+                (new DaoPatient()).Insert(p);
             }
-            //TODO ajouter le patient a la db
         }
 
         //interface Médecin
