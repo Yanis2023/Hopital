@@ -57,7 +57,7 @@ namespace ProjetHopital
         }
         public void Insert(Patient p)
         {
-            string connexionString = @"Data Source=PC-YOANN-23\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
+            string connexionString = InfoSql.CONNEXION_INFO;
             string sql = "insert into articles values (@reference,@marque,@prix)";
 
             SqlConnection connexion = new SqlConnection(connexionString);
@@ -79,7 +79,7 @@ namespace ProjetHopital
 
         public void Update(Patient p)
         {
-            string connexionString = @"Data Source=PC-YOANN-23\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
+            string connexionString = CONNEXION_INFO;
             string sql = "update articles set marque=@marque ,prix=@prix where reference=@reference";
 
             SqlConnection connexion = new SqlConnection(connexionString);
@@ -102,7 +102,7 @@ namespace ProjetHopital
 
         public void Delete(int id)
         {
-            string connexionString = @"Data Source=PC-YOANN-23\SQLEXPRESS;Initial Catalog=ajc;Integrated Security=True";
+            string connexionString = CONNEXION_INFO;
             string sql = "delete from articles where id=" + id;
 
             SqlConnection connexion = new SqlConnection(connexionString);

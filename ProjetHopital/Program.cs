@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace ProjetHopital
 {
     class Program
     {
+        private static Hopital hopital = Hopital.Instance;
+
         static void Main(string[] args)
         {
             Console.WriteLine("Bienvenue à l'hopital");
@@ -43,18 +46,50 @@ namespace ProjetHopital
                     "7 - Afficher toutes les visites d'un médecin\n8 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
                 while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 8)) ;
                 if (choix == 1)
-                    AjouterPatient();
+                    RajouterPatientFile();
                 //do redirections there
             }
             Console.WriteLine("Fermeture interface Secrétaire");
         }
 
-        static void AjouterPatient()
+        static void RajouterPatientFile()
         {
-            Console.WriteLine("Veuillez saisir un identifiant:");
+            Console.WriteLine("Veuillez saisir un identifiant (0 si nouveau patient):");
             int id;
             while (!Int32.TryParse(Console.ReadLine(), out id));
-            //TODO check si id existe dans la db
+
+            Patient patient;
+            if (id != 0)
+            {
+                patient = hopital.DaoPatient.SelectById(id);
+                if (patient != null)
+                {
+                    Console.WriteLine($"Patient trouvé: {patient.Nom} {patient.Prenom}, Âge: {patient.Age}, Adresse: {patient.Adresse}, Téléphone: {patient.Telephone}");
+                    Console.Write("Souhaitez-vous mettre à jour ce patient ? (o/n) : ");
+                    string choiceUpdatePatient = Console.ReadLine().ToLower();
+                    while (!String.TryParse(Console.ReadLine(), out choiceUpdatePatient));
+                    if (choiceUpdatePatient == "n")
+                    {
+                        return;
+                    }else
+                    {
+                        Console.WriteLine("Veuillez saisir l'adresse");
+                        string adresse = Console.ReadLine();
+                        Console.WriteLine("Veuillez saisir le numéro de téléphone");
+                        int tel;
+                        while (!Int32.TryParse(Console.ReadLine(), out tel) && tel.ToString().Length != 9) ;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Aucun patient trouvé avec cet ID. Création d'un nouveau patient.");
+                    patient = new Patient { Id = id };
+                }
+            }
+            else
+            {
+                patient = new Patient();
+            }
             Console.WriteLine("Veuillez saisir le nom:");
             string nom = Console.ReadLine();
             Console.WriteLine("Veuillez saisir le prénom:");
@@ -73,7 +108,16 @@ namespace ProjetHopital
                 int tel;
                 while (!Int32.TryParse(Console.ReadLine(), out tel) && tel.ToString().Length != 9) ;
             }
-            //TODO ajouter le patient a la db
+            hopital.DaoPatient.Insert(Patient patient);
+            hopital.FileAttente.Enqueue(patient);
+
+            string dateHeureArrivee = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+            using (StreamWriter sw = new StreamWriter("patients.txt", true))
+            {
+            sw.WriteLine($"{patient.Id} {dateHeureArrivee}");
+            }
+
+            Console.WriteLine("Patient ajouté à la file d'attente avec succès.");
         }
 
         //interface Médecin
