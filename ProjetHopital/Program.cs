@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +8,6 @@ namespace ProjetHopital
 {
     class Program
     {
-        private static Hopital hopital = Hopital.Instance;
-
         static void Main(string[] args)
         {
             Console.WriteLine("Bienvenue à l'hopital");
@@ -48,15 +45,15 @@ namespace ProjetHopital
                     "7 - Afficher toutes les visites d'un médecin\n8 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
                 while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 8)) ;
                 if (choix == 1)
-                    RajouterPatientFile();
+                    AjouterPatient();
                 //do redirections there
             }
             Console.WriteLine("Fermeture interface Secrétaire");
         }
 
-        static void RajouterPatientFile()
+        static void AjouterPatient()
         {
-            Console.WriteLine("Veuillez saisir un identifiant (0 si nouveau patient):");
+            Console.WriteLine("Veuillez saisir un identifiant:");
             int id;
             while (!Int32.TryParse(Console.ReadLine(), out id));
             Patient p = (new DaoPatient()).SelectById(id);
