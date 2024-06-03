@@ -29,7 +29,15 @@ namespace ProjetHopital
                 if (metier == 0) //secretaire
                     InterfaceSecretaire();
                 else //medecin
+                {
+                    if (hopital.Salles.Count < metier)
+                        for (int i = hopital.Salles.Count; i < metier; ++i)
+                            hopital.Salles.Add(new Salle(i));
+                    Console.WriteLine($"count {hopital.Salles.Count} metier {metier}");
+                    hopital.SalleActive = metier - 1;
+                    hopital.Salles[hopital.SalleActive].MedecinActuel = nom;
                     InterfaceMedecin();
+                }
             }
             else
                 Console.WriteLine("Erreur de login ou de mot de passe");
@@ -42,11 +50,12 @@ namespace ProjetHopital
             int choix = -1;
             while (choix != 8)
             {
-                Console.WriteLine("1 - Rajouter un patient\n2 - Sauvegarder la liste d'attente\n3 - Charger la liste d'attente\n" +
+                Console.WriteLine("1 - Rajouter un patient\n2 - Sauvegarder la liste d'attente\n3 - Charger/Afficher la liste d'attente\n" +
                     "4 - Nouvelle journée\n5 - Afficher les visites d'un patient\n6 - Afficher toutes les visites\n" +
-                    "7 - Afficher toutes les visites d'un médecin\n8 - Mettre à jour les données d'un patient -  Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
-                while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 9)) ;
-                if (choix == 9)
+                    "7 Afficher le prochain patient\n" +
+                    "8 - Afficher toutes les visites d'un médecin\n9 - Mettre à jour patient\n10 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
+                while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 10)) ;
+                if (choix == 10)
                     break;
 
                 switch (choix)
@@ -70,8 +79,12 @@ namespace ProjetHopital
                         
                         break;
                     case 7:
+                        AfficherProchainPatient();
                         break;
-                    case 8:               
+                    case 8:
+
+                        break;
+                    case 9:               
                         MettreAJourPatient();
                         break;
                 }
@@ -132,13 +145,14 @@ namespace ProjetHopital
         {
             string filePath = "patients.txt";
 
+            Console.WriteLine("Liste des patients dans la file d'attente :");
             if (!File.Exists(filePath))
             {
-                Console.WriteLine("Le fichier patients.txt n'existe pas.");
+                foreach (Patient p in hopital.FileAttente)
+                    Console.WriteLine(p);
+                //Console.WriteLine("Le fichier patients.txt n'existe pas.");
                 return;
             }
-
-            Console.WriteLine("Liste des patients dans la file d'attente :");
 
             using (StreamReader sr = new StreamReader(filePath))
             {
@@ -148,7 +162,6 @@ namespace ProjetHopital
                     
                     string[] parts = line.Split(' ');
 
-                   
 
                 }
             }
@@ -156,8 +169,8 @@ namespace ProjetHopital
 
         private static void AfficherProchainPatient()
         {
-            //TODO
-            throw new NotImplementedException();
+            Console.WriteLine("Prochain patient:");
+            Console.WriteLine(hopital.FileAttente.Peek());
         }
 
         public static void MettreAJourPatient()
@@ -228,8 +241,25 @@ namespace ProjetHopital
                 4 - Rendre la salle disponible\n
                 5 - Quitter l'interface médecin\n
                 Veuillez entrer votre choix: ");
-            while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 5)) ;
-                //do redirections there
+                while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 5)) ;
+                if (choix == 5)
+                    break;
+
+                switch (choix)
+                {
+                    case 1:
+                        AfficherFileAttente();
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+                        hopital.Salles[hopital.SalleActive].SauvegarderVisites();
+                        break;
+                    case 4:
+                        hopital.Salles[hopital.SalleActive].RendreDispo();
+                        break;
+                }                //do redirections there
             }
             Console.WriteLine("Fermeture interface Médecin");
         }
