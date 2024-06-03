@@ -38,16 +38,12 @@ namespace ProjetHopital
             int choix = -1;
             while (choix != 8)
             {
-                Console.WriteLine(@"1 - Rajouter un patient\n
-                                    2 - Sauvegarder la liste d'attente\n\
-                                    3 - Charger la liste d'attente\n\
-                                    4 - Nouvelle journée\n\
-                                    5 - Afficher les visites d'un patient\n\
-                                    6 - Afficher toutes les visites\n\
-                                    7 - Afficher toutes les visites d'un médecin\n\
-                                    8 - Quitter l'interface secrétaire\n\
-                                     Veuillez entrer votre choix: ");
-            while (!Int32.TryParse(Console.ReadLine()out choix) && (choix < 1 || choix > 8)) ;
+                Console.WriteLine("1 - Rajouter un patient\n2 - Sauvegarder la liste d'attente\n3 - Charger la liste d'attente\n" +
+                    "4 - Nouvelle journée\n5 - Afficher les visites d'un patient\n6 - Afficher toutes les visites\n" +
+                    "7 - Afficher toutes les visites d'un médecin\n8 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
+                while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 8)) ;
+                if (choix == 1)
+                    AjouterPatient();
                 //do redirections there
             }
             Console.WriteLine("Fermeture interface Secrétaire");
@@ -55,13 +51,13 @@ namespace ProjetHopital
 
         static void AjouterPatient()
         {
-            "Veuillez saisir un identifiant:"
-        "Veuillez saisir le nom:"
-        "Veuillez saisir le prénom:"
-        "Veuillez saisir l'age du patient"
-        "Voulez vous renseigner l'adresse et le numéro de téléphone du patient ? o/n"
-        "Veuillez saisir l'adresse"
-        "Veuillez saisir le numéro de téléphone"
+            Console.WriteLine("Veuillez saisir un identifiant:");
+            Console.WriteLine("Veuillez saisir le nom:");
+            Console.WriteLine("Veuillez saisir le prénom:");
+            Console.WriteLine("Veuillez saisir l'age du patient");
+            Console.WriteLine("Voulez vous renseigner l'adresse et le numéro de téléphone du patient ? o/n");
+            Console.WriteLine("Veuillez saisir l'adresse");
+            Console.WriteLine("Veuillez saisir le numéro de téléphone");
         }
 
         //interface Médecin
@@ -83,7 +79,5 @@ namespace ProjetHopital
             }
             Console.WriteLine("Fermeture interface Médecin");
         }
-
-
     }
 }
