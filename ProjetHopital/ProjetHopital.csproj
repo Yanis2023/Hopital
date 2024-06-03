@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentification.cs" />
+    <Compile Include="DaoAuthentification.cs" />
+    <Compile Include="DaoPatient.cs" />
+    <Compile Include="DaoVisite.cs" />
     <Compile Include="Patient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
