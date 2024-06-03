@@ -13,28 +13,35 @@ namespace ProjetHopital
         private string nomMedecin;
         private string date;
         private int numSalle;
-        private double tarif;
+        private decimal tarif;
 
         public Visite() { } 
-        public Visite(int idVisite, int idPatient, string nomMedecin, string date, int numSalle, double tarif)
+        public Visite(int idVisite, int idPatient, string nomMedecin, string date, int numSalle, decimal tarif)
         {
-            this.idVisite = idVisite;
-            this.idPatient = idPatient;
-            this.nomMedecin = nomMedecin;
-            this.date = date;
-            this.numSalle = numSalle;
-            this.tarif = tarif;
+            this.IdVisite = idVisite;
+            this.IdPatient = idPatient;
+            this.NomMedecin = nomMedecin;
+            this.Date = date;
+            this.NumSalle = numSalle;
+            this.Tarif = tarif;
         }
+
+        public int IdVisite { get => idVisite; set => idVisite = value; }
+        public int IdPatient { get => idPatient; set => idPatient = value; }
+        public string NomMedecin { get => nomMedecin; set => nomMedecin = value; }
+        public string Date { get => date; set => date = value; }
+        public int NumSalle { get => numSalle; set => numSalle = value; }
+        public decimal Tarif { get => tarif; set => tarif = value; }
 
         public override string ToString()
         {
             string result = "";
 
-            result += idPatient + " ";
-            result += nomMedecin + " ";
-            result += date + " ";
-            result += numSalle + " ";
-            result += tarif + " ";
+            result += IdPatient + " ";
+            result += NomMedecin + " ";
+            result += Date + " ";
+            result += NumSalle + " ";
+            result += Tarif + " ";
 
             return result;
         }
