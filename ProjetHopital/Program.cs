@@ -20,15 +20,17 @@ namespace ProjetHopital
             string login = Console.ReadLine();
             Console.WriteLine("mdp:");
             string mdp = Console.ReadLine();
-            //TODO DAO LINK
-            int authResult = 1; //validation retourne le numero de job ou -1 si echec
-            if (authResult == 1) //secretaire
-                InterfaceSecretaire();
-            else if (authResult > 1) //medecin
-                InterfaceMedecin();
+            string nom;
+            int metier;
+            if (DaoAuthentification.Login(login, mdp, out nom, out metier))
+            {
+                if (metier == 0) //secretaire
+                    InterfaceSecretaire();
+                else //medecin
+                    InterfaceMedecin();
+            }
             else
                 Console.WriteLine("Erreur de login ou de mot de passe");
-            //option pour quitter la console ?
             Login();
         }
 
