@@ -122,7 +122,7 @@ namespace ProjetHopital
 
             SqlDataReader reader = command.ExecuteReader();
 
-            if (reader.Read())
+            while (reader.Read())
             {
 
                 v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
@@ -147,7 +147,7 @@ namespace ProjetHopital
 
             SqlDataReader reader = command.ExecuteReader();
 
-            if (reader.Read())
+            while (reader.Read())
             {
 
                 v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
