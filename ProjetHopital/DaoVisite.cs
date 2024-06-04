@@ -216,7 +216,8 @@ namespace ProjetHopital
                             reader.GetString(3),
                             reader.GetDateTime(2).ToString(),
                             reader.GetInt32(4),
-                            reader.GetDecimal(5)
+                            reader.GetDecimal(5),
+                            reader.GetFloat(6)
                         ));
                     }
                 }
