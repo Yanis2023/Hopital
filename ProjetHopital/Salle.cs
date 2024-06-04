@@ -14,9 +14,11 @@ namespace ProjetHopital
         private string medecinActuel;
         private List<Visite> visitesFaites;
         private Patient patientActuel;
+        private DateTime arriveePatient;
         public string MedecinActuel { get => medecinActuel; set => medecinActuel = value; }
         public int Num { get => num; }
         public Patient PatientActuel { get => patientActuel; set => patientActuel = value; }
+        public DateTime ArriveePatient { get => arriveePatient; set => arriveePatient = value; }
 
         public Salle(int num, string nomMedecin = "")
         {
@@ -35,8 +37,8 @@ namespace ProjetHopital
         {
             if (patientActuel != null)
             {
-                Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
-                visitesFaites.Add(new Visite(0, patientActuel.Id, medecinActuel, DateTime.Now.ToString("dd/MM/yyyy HH:mm"), num, prixConsult));
+                Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm") + " num=" + num);
+                visitesFaites.Add(new Visite(0, patientActuel.Id, medecinActuel, DateTime.Now.ToString("dd/MM/yyyy HH:mm"), num, prixConsult, DateTime.Now.Subtract(arriveePatient).TotalMinutes));
             }
             patientActuel = null;
             if (visitesFaites.Count >= quotat)

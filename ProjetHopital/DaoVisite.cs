@@ -28,7 +28,7 @@ namespace ProjetHopital
             while (reader.Read())
             {
                 liste.Add(new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
-                                 reader.GetInt32(4), reader.GetDecimal(5)));
+                                 reader.GetInt32(4), reader.GetDecimal(5), reader.GetFloat(6)));
             }
 
             connexion.Close();
@@ -53,7 +53,7 @@ namespace ProjetHopital
             {
 
                 v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
-                                 reader.GetInt32(4), reader.GetDecimal(5));
+                                 reader.GetInt32(4), reader.GetDecimal(5), reader.GetFloat(6));
             }
             connexion.Close();
             return v;
@@ -82,7 +82,8 @@ namespace ProjetHopital
                             reader.GetString(3),
                             reader.GetDateTime(2).ToString(),
                             reader.GetInt32(4),
-                            reader.GetDecimal(5)
+                            reader.GetDecimal(5),
+                            reader.GetFloat(6)
                         ));
                     }
                 }
@@ -113,7 +114,8 @@ namespace ProjetHopital
                             reader.GetString(3),
                             reader.GetDateTime(2).ToString(),
                             reader.GetInt32(4),
-                            reader.GetDecimal(5)
+                            reader.GetDecimal(5),
+                            reader.GetFloat(6)
                         ));
                     }
                 }
@@ -145,7 +147,8 @@ namespace ProjetHopital
                             reader.GetString(3),
                             reader.GetDateTime(2).ToString(),
                             reader.GetInt32(4),
-                            reader.GetDecimal(5)
+                            reader.GetDecimal(5),
+                            reader.GetFloat(6)
                         ));
                     }
                 }
@@ -178,7 +181,8 @@ namespace ProjetHopital
                             reader.GetString(3),
                             reader.GetDateTime(2).ToString(),
                             reader.GetInt32(4),
-                            reader.GetDecimal(5)
+                            reader.GetDecimal(5),
+                            reader.GetFloat(6)
                         ));
                     }
                 }
@@ -212,7 +216,8 @@ namespace ProjetHopital
                             reader.GetString(3),
                             reader.GetDateTime(2).ToString(),
                             reader.GetInt32(4),
-                            reader.GetDecimal(5)
+                            reader.GetDecimal(5),
+                            reader.GetFloat(6)
                         ));
                     }
                 }
@@ -220,11 +225,57 @@ namespace ProjetHopital
             return visites;
         }
 
+        public string SelectNbVisiteMedecin(string medecin)
+        {
+            string result = "MEDECIN  NOMBRE_VISITES\n";
+
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT medecin, COUNT(medecin) as NbVisites  FROM visites WHERE medecin='" + medecin + "' GROUP BY medecin";
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                result += reader["medecin"] + "\t"  + reader["NbVisites"] + "\n";
+            }
+
+            connexion.Close();
+            return result;
+        }
+        public string SelectNbVisiteSalleMedecin()
+        {
+            string result= "MEDECIN  NUMERO_SALLE  NOMBRE_VISITES\n";
+          
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT medecin, num_salle, COUNT(medecin) as NbVisites FROM visites GROUP BY medecin, num_salle ORDER BY num_salle, medecin ASC";
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                result += reader["medecin"] + "\t" + reader["num_salle"] + "\t" + reader["NbVisites"] +"\n";
+            }
+
+            connexion.Close();
+            return result;
+        }
         public void Insert(Visite v)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "USE Hopital;INSERT INTO visites VALUES (@idPatient,@date,@nomMedecin,@numSalle,@tarif)";
+            string sql = "USE Hopital;INSERT INTO visites VALUES (@idPatient,@date,@nomMedecin,@numSalle,@tarif,@dureeAttente)";
 
             DateTime dateTime = DateTime.Parse(v.Date);
 
@@ -236,6 +287,7 @@ namespace ProjetHopital
             command.Parameters.Add("nomMedecin", SqlDbType.NVarChar).Value = v.NomMedecin;
             command.Parameters.Add("numSalle", SqlDbType.Int).Value = v.NumSalle;
             command.Parameters.Add("tarif", SqlDbType.Decimal).Value = v.Tarif;
+            command.Parameters.Add("dureeAttente", SqlDbType.Float).Value = v.DureeHopital;
 
 
             connexion.Open();
@@ -249,7 +301,7 @@ namespace ProjetHopital
         {
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "USE Hopital;UPDATE visites SET idPatient=@idPatient ,Medecin=@nomMedecin, date=@date, num_Salle=@numSalle, tarif=@tarif WHERE id=@idVisite";
+            string sql = "USE Hopital;UPDATE visites SET idPatient=@idPatient ,Medecin=@nomMedecin, date=@date, num_Salle=@numSalle, tarif=@tarif, dureeAttente=@dureeAttente WHERE id=@idVisite";
 
 
             SqlConnection connexion = new SqlConnection(connexionString);
@@ -261,6 +313,7 @@ namespace ProjetHopital
             command.Parameters.Add("date", SqlDbType.Date).Value = v.Date;
             command.Parameters.Add("numSalle", SqlDbType.Int).Value = v.NumSalle;
             command.Parameters.Add("tarif", SqlDbType.Decimal).Value = v.Tarif;
+            command.Parameters.Add("dureeAttente", SqlDbType.Float).Value = v.DureeHopital;
 
             connexion.Open();
             // Excecution de la requête

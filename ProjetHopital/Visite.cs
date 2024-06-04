@@ -14,9 +14,10 @@ namespace ProjetHopital
         private string nomMedecin;
         private int numSalle;
         private decimal tarif;
+        private double dureeHopital;
 
         public Visite() { } 
-        public Visite(int idVisite, int idPatient, string nomMedecin, string date, int numSalle, decimal tarif)
+        public Visite(int idVisite, int idPatient, string nomMedecin, string date, int numSalle, decimal tarif, double dureeHopital)
         {
             this.IdVisite = idVisite;
             this.IdPatient = idPatient;
@@ -24,6 +25,7 @@ namespace ProjetHopital
             this.Date = date;
             this.NumSalle = numSalle;
             this.Tarif = tarif;
+            this.dureeHopital = dureeHopital;
         }
 
         public int IdVisite { get => idVisite; set => idVisite = value; }
@@ -32,6 +34,7 @@ namespace ProjetHopital
         public string Date { get => date; set => date = value; }
         public int NumSalle { get => numSalle; set => numSalle = value; }
         public decimal Tarif { get => tarif; set => tarif = value; }
+        public double DureeHopital { get => dureeHopital; set => dureeHopital = value; }
 
         public override string ToString()
         {
@@ -42,6 +45,7 @@ namespace ProjetHopital
             result += Date + " ";
             result += NumSalle + " ";
             result += Tarif + " ";
+            result += DureeHopital + " ";
 
             return result;
         }
