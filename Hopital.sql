@@ -63,6 +63,6 @@ INSERT INTO visites (idpatient, date, medecin, num_salle, tarif) VALUES
 INSERT INTO authentification (login, password, nom, metier) VALUES
 ('secretaire', 'secretaire123', 'Secretaire', 0),
 ('medecin1', 'medecin123', 'Dr. Maboul', 1),
-('medecin2', 'medecin123', 'Dr. Who', 2);
+('medecin2', 'medecin123', 'Dr. Who', 2), ('admin', 'admin123', 'Administrateur', -1);
 
 
