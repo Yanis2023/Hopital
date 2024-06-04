@@ -201,9 +201,39 @@ namespace ProjetHopital
         {
             Console.WriteLine("Liste des patients dans la file d'attente :");
 
-            foreach (Patient patient in hopital.FileAttente)
+            //if (hopital.FileAttente.Count == 0 && File.Exists("patients.txt"))
+            //{
+                ChargerFileDAttente();
+            //}
+            //else
+            //{
+            //    foreach (Patient patient in hopital.FileAttente)
+            //    {
+            //        Console.WriteLine($"ID: {patient.Id}, Nom: {patient.Nom}, Prénom: {patient.Prenom}, Âge: {patient.Age}, Adresse: {patient.Adresse}, Téléphone: {patient.Telephone}");
+            //    }
+            //}
+
+        }
+
+        private static void ChargerFileDAttente()
+        {
+            string dateHeureArrivee = null ;
+            using (StreamReader sr = new StreamReader("patients.txt"))
             {
-                Console.WriteLine($"ID: {patient.Id}, Nom: {patient.Nom}, Prénom: {patient.Prenom}, Âge: {patient.Age}, Adresse: {patient.Adresse}, Téléphone: {patient.Telephone}");
+                string ligne;
+                while ((ligne = sr.ReadLine()) != null)
+                {
+                    string[] parts = ligne.Split(' ');
+                    int id = int.Parse(parts[0]);
+                    dateHeureArrivee = $"{parts[1]}";
+
+                    Patient patient = new DaoPatient().SelectById(id);
+
+                    hopital.FileAttente.Enqueue(patient);
+                    Console.WriteLine(value: $"Patient ID: {patient.Id}, Nom: {patient.Nom}, Prénom: {patient.Prenom}, Age: {patient.Age}, Adresse: {patient.Adresse}, Téléphone: {patient.Telephone}, Date d'arrivée: {dateHeureArrivee}");
+
+                }
+                Console.WriteLine("Chargement réussi.");
             }
         }
 
