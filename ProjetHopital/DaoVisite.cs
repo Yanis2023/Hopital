@@ -65,7 +65,6 @@ namespace ProjetHopital
 
             string sql = "USE Hopital;SELECT * FROM visites WHERE idPatient=" + idPatient;
 
-
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = new SqlCommand(sql, connexion);
 
@@ -81,6 +80,82 @@ namespace ProjetHopital
             }
             connexion.Close();
             return v;
+        }
+        public List<Visite> SelectByIdPatientBetween2dates(int idPatient,string date1,string date2)
+        {
+            List<Visite> liste = new List<Visite>();
+            Visite v = new Visite();
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT * FROM visites WHERE (idPatient=" + idPatient + ") " +
+                "AND (date BETWEEN '" + date1 + "' and '" + date2 + "') ";
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+
+                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
+                                 reader.GetInt32(4), reader.GetDecimal(5));
+                liste.Add(v);
+            }
+            connexion.Close();
+            return liste;
+        }
+        public List<Visite> SelectVisitePatientByDate(string date) // Format France (ex: 04-06-2024)
+        {
+            List<Visite> liste = new List<Visite>();
+            Visite v = new Visite();
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT * FROM visites WHERE date='" + date + "' ORDER BY date ASC";
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+
+                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
+                                 reader.GetInt32(4), reader.GetDecimal(5));
+                liste.Add(v);
+            }
+            connexion.Close();
+            return liste;
+        }
+        public List<Visite> SelectVisitePatientByMedecin(string nomMedecin) 
+        {
+            List<Visite> liste = new List<Visite>();
+            Visite v = new Visite();
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT * FROM visites WHERE medecin='" + nomMedecin + "'  ";
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+
+                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
+                                 reader.GetInt32(4), reader.GetDecimal(5));
+                liste.Add(v);
+            }
+            connexion.Close();
+            return liste;
         }
         public List<Visite> SelectByMedecin(string nomMedecin)
         {

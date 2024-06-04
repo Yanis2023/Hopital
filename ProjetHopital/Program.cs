@@ -12,9 +12,7 @@ namespace ProjetHopital
         private static Hopital hopital = Hopital.Instance;
         static void Main(string[] args)
         {
-            DaoVisite daoV = new DaoVisite();
-            Visite v = new Visite (16, 3, "Praud", "1985-02-12", 2, 30);
-            daoV.Update(v);
+     
             Console.WriteLine("Bienvenue à l'hopital");
             Login();
         }
