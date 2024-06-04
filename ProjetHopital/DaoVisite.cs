@@ -117,15 +117,16 @@ namespace ProjetHopital
         {
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "USE Hopital;INSERT INTO visites VALUES (@idPatient,@nomMedecin,@date,@numSalle,@tarif)";
+            string sql = "USE Hopital;INSERT INTO visites VALUES (@idPatient,@date,@nomMedecin,@numSalle,@tarif)";
 
+            DateTime dateTime = DateTime.Parse(v.Date);
 
             SqlConnection connexion = new SqlConnection(connexionString);
             SqlCommand command = connexion.CreateCommand();
             command.CommandText = sql;
             command.Parameters.Add("idPatient", SqlDbType.Int).Value = v.IdPatient;
+            command.Parameters.Add("date", SqlDbType.DateTime).Value = dateTime ;
             command.Parameters.Add("nomMedecin", SqlDbType.NVarChar).Value = v.NomMedecin;
-            command.Parameters.Add("date", SqlDbType.Date).Value = v.Date;
             command.Parameters.Add("numSalle", SqlDbType.Int).Value = v.NumSalle;
             command.Parameters.Add("tarif", SqlDbType.Decimal).Value = v.Tarif;
 
@@ -141,7 +142,7 @@ namespace ProjetHopital
         {
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "USE Hopital;UPDATE visites SET idPatient=@idPatient ,nomMedecin=@nomMedecin, date=@date, numSalle=@numSalle, tarif=@tarif WHERE idVisite=@idVisite";
+            string sql = "USE Hopital;UPDATE visites SET idPatient=@idPatient ,Medecin=@nomMedecin, date=@date, num_Salle=@numSalle, tarif=@tarif WHERE id=@idVisite";
 
 
             SqlConnection connexion = new SqlConnection(connexionString);

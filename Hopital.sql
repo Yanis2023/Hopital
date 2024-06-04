@@ -34,7 +34,7 @@ CREATE TABLE patients (
 CREATE TABLE visites (
     id INT PRIMARY KEY IDENTITY(1,1),
     idpatient INT,
-    date DATE,
+    date DATETIME,
     medecin NVARCHAR(50),
     num_salle INT,
     tarif DECIMAL(10, 2),
