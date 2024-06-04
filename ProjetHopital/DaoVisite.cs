@@ -58,29 +58,36 @@ namespace ProjetHopital
             connexion.Close();
             return v;
         }
-        public Visite SelectByIdPatient(int idPatient)
+        public List<Visite> SelectByIdPatient(int idPatient)
         {
-            Visite v = new Visite();
+            List<Visite> visites = new List<Visite>();
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "USE Hopital;SELECT * FROM visites WHERE idPatient=" + idPatient;
+            string sql = "USE Hopital; SELECT * FROM visites WHERE IdPatient = @idPatient";
 
-
-            SqlConnection connexion = new SqlConnection(connexionString);
-            SqlCommand command = new SqlCommand(sql, connexion);
-
-            connexion.Open();
-
-            SqlDataReader reader = command.ExecuteReader();
-
-            if (reader.Read())
+            using (SqlConnection connexion = new SqlConnection(connexionString))
             {
+                SqlCommand command = new SqlCommand(sql, connexion);
+                command.Parameters.AddWithValue("@idPatient", idPatient);
 
-                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
-                                 reader.GetInt32(4), reader.GetDecimal(5));
+                connexion.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        visites.Add(new Visite(
+                            reader.GetInt32(0),
+                            reader.GetInt32(1),
+                            reader.GetDateTime(2).ToString(),
+                            reader.GetString(3),
+                            reader.GetInt32(4),
+                            reader.GetDecimal(5)
+                        ));
+                    }
+                }
             }
-            connexion.Close();
-            return v;
+            return visites;
         }
         public List<Visite> SelectByMedecin(string nomMedecin)
         {
@@ -113,6 +120,39 @@ namespace ProjetHopital
             }
             return visites;
         }
+
+        public List<Visite> SelectVisitePatientByMedecin(int id)
+        {
+            List<Visite> visites = new List<Visite>();
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital; SELECT * FROM visites WHERE IdPatient = @id ORDER BY medecin";
+
+            using (SqlConnection connexion = new SqlConnection(connexionString))
+            {
+                SqlCommand command = new SqlCommand(sql, connexion);
+                command.Parameters.AddWithValue("@id", id);
+
+                connexion.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        visites.Add(new Visite(
+                            reader.GetInt32(0),
+                            reader.GetInt32(1),
+                            reader.GetDateTime(2).ToString(),
+                            reader.GetString(3),
+                            reader.GetInt32(4),
+                            reader.GetDecimal(5)
+                        ));
+                    }
+                }
+            }
+            return visites;
+        }
+
         public void Insert(Visite v)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
