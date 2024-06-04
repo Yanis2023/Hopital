@@ -26,7 +26,7 @@ namespace ProjetHopital
                 return true;
             }
             nom = "";
-            job = -1;
+            job = -2;
             connexion.Close();
             return false;
         }
