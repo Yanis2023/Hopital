@@ -279,7 +279,7 @@ namespace ProjetHopital
                         NombreVisitePourUnPatient(id);
                         break;
                     case 4:
-
+                        NombreVisitePourUnPatientEntre2Dates(id);
                         break;
                 }
             }
@@ -337,15 +337,14 @@ namespace ProjetHopital
         private static void NombreVisitePourUnPatientEntre2Dates(int id)
         {
             Console.WriteLine("Saisissez une premiere date : ");
-            DateTime date1 = Convert.ToDateTime(Console.ReadLine());
+            string date1 = Console.ReadLine();
             Console.WriteLine("Saisissez une premiere date : ");
-            DateTime date2 = Convert.ToDateTime(Console.ReadLine());
+            string date2 = Console.ReadLine();
 
             DaoVisite daoVisite = new DaoVisite();
-            //List<Visite> visites = daoVisite.SelectByIdPatientBetween2Dates(id, date1, date2);
-
-
-            //Console.WriteLine("Le patient a effectué : " + visites.Count + " visites entre le " + date1 + " et le " +date2);
+            List<Visite> visites = daoVisite.SelectByIdPatientBetween2Dates(id, date1, date2);
+            
+            Console.WriteLine("Le patient a effectué : " + visites.Count + " visites entre le " + date1 + " et le " +date2);
         }
 
         private static void AfficherToutesLesVisites()

@@ -190,6 +190,40 @@ namespace ProjetHopital
             return visites;
         }
 
+        public List<Visite> SelectByIdPatientBetween2Dates(int id, string date1, string date2)
+        {
+            List<Visite> visites = new List<Visite>();
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital; SELECT * FROM visites WHERE IdPatient = @id AND date BETWEEN @date1 AND @date2";
+
+            using (SqlConnection connexion = new SqlConnection(connexionString))
+            {
+                SqlCommand command = new SqlCommand(sql, connexion);
+                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@date1", date1);
+                command.Parameters.AddWithValue("@date2", date2);
+
+                connexion.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        visites.Add(new Visite(
+                            reader.GetInt32(0),
+                            reader.GetInt32(1),
+                            reader.GetString(3),
+                            reader.GetDateTime(2).ToString(),
+                            reader.GetInt32(4),
+                            reader.GetDecimal(5)
+                        ));
+                    }
+                }
+            }
+            return visites;
+        }
+
         public void Insert(Visite v)
         {
             string connexionString = InfoSql.CONNEXION_INFO;
