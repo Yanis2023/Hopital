@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Xml.Serialization;
+
 namespace ProjetHopital
 {
     class Program
@@ -12,6 +14,10 @@ namespace ProjetHopital
         private static Hopital hopital = Hopital.Instance;
         static void Main(string[] args)
         {
+            if (File.Exists("patients.txt"))
+            {
+                ChargerFileDAttente();
+            }
             Console.WriteLine("Bienvenue à l'hopital");
             Login();
         }
@@ -91,7 +97,7 @@ namespace ProjetHopital
             int choix = -1;
             while (choix != 10)
             {
-                Console.WriteLine("1  - Rajouter un patient\n2  - Sauvegarder la liste d'attente\n3  - Charger/Afficher la liste d'attente\n" +
+                Console.WriteLine("1  - Rajouter un patient\n2  - Sauvegarder la liste d'attente et Quitter\n3  - Afficher la liste d'attente\n" +
                     "4  - Nouvelle journée\n5  - Afficher les visites d'un patient\n6  - Afficher toutes les visites\n" +
                     "7  - Afficher le prochain patient\n" +
                     "8  - Afficher toutes les visites d'un médecin\n9  - Mettre à jour patient\n10 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
@@ -187,40 +193,34 @@ namespace ProjetHopital
 
         private static void SauvegarderFileDAttente()
         {
-            StreamWriter sw = new StreamWriter("patients.txt", false);
+            StreamWriter sw = new StreamWriter("patients.txt");
                 
             foreach (Tuple<Patient, DateTime> tp in hopital.FileAttente)
             {
                 Patient p = tp.Item1;
-                string dateHeureArrivee = tp.Item2.ToString("dd/MM/yyyy HH:mm");
+                DateTime dateHeureArrivee = tp.Item2;
                 sw.WriteLine($"{p.Id} {dateHeureArrivee}");
                 Console.WriteLine($"Patient ID: {p.Id}, Nom: {p.Nom}, Prénom: {p.Prenom}, Age: {p.Age}, Adresse: {p.Adresse}, Téléphone: {p.Telephone}, Date d'arrivée: {dateHeureArrivee}");
             }
-                Console.WriteLine("Sauvegarde réussie.");
+            sw.Close();
+            Console.WriteLine("Sauvegarde réussie.");
+            Environment.Exit(0);
         }
-
 
         private static void AfficherFileAttente()
         {
             Console.WriteLine("Liste des patients dans la file d'attente :");
-
-            //if (hopital.FileAttente.Count == 0 && File.Exists("patients.txt"))
-            //{
-                ChargerFileDAttente();
-            //}
-            //else
-            //{
-            //    foreach (Patient patient in hopital.FileAttente)
-            //    {
-            //        Console.WriteLine($"ID: {patient.Id}, Nom: {patient.Nom}, Prénom: {patient.Prenom}, Âge: {patient.Age}, Adresse: {patient.Adresse}, Téléphone: {patient.Telephone}");
-            //    }
-            //}
-
+            foreach(Tuple<Patient, DateTime> tp in hopital.FileAttente)
+            {
+                Patient p = tp.Item1;
+                DateTime dateHeureArrivee = tp.Item2;
+                Console.WriteLine($"Patient ID: {p.Id}, Nom: {p.Nom}, Prénom: {p.Prenom}, Age: {p.Age}, Adresse: {p.Adresse}, Téléphone: {p.Telephone}, Date d'arrivée: {dateHeureArrivee}");
+            }
         }
 
         private static void ChargerFileDAttente()
         {
-            string dateHeureArrivee = null ;
+            
             using (StreamReader sr = new StreamReader("patients.txt"))
             {
                 string ligne;
@@ -228,16 +228,16 @@ namespace ProjetHopital
                 {
                     string[] parts = ligne.Split(' ');
                     int id = int.Parse(parts[0]);
-                    dateHeureArrivee = $"{parts[1]}";
+                    DateTime dateHeureArrivee = Convert.ToDateTime($"{parts[1]}  {parts[2]}");
 
                     Patient patient = new DaoPatient().SelectById(id);
 
-                    hopital.FileAttente.Enqueue(patient);
-                    Console.WriteLine(value: $"Patient ID: {patient.Id}, Nom: {patient.Nom}, Prénom: {patient.Prenom}, Age: {patient.Age}, Adresse: {patient.Adresse}, Téléphone: {patient.Telephone}, Date d'arrivée: {dateHeureArrivee}");
-
+                    hopital.FileAttente.Enqueue(new Tuple<Patient, DateTime>(patient, dateHeureArrivee));
+                    
                 }
                 Console.WriteLine("Chargement réussi.");
             }
+            File.Delete("patients.txt");
         }
 
         private static void AfficherProchainPatient()
