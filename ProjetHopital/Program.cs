@@ -26,7 +26,9 @@ namespace ProjetHopital
             int metier;
             if (DaoAuthentification.Login(login, mdp, out nom, out metier))
             {
-                if (metier == 0) //secretaire
+                if (metier == -1) //admin
+                    InterfaceAdmin();
+                else if (metier == 0) //secretaire
                     InterfaceSecretaire();
                 else //medecin
                 {
@@ -44,6 +46,36 @@ namespace ProjetHopital
             Login();
         }
 
+        static void InterfaceAdmin()
+        {
+
+            Console.WriteLine("Bienvenue dans l'interface Admin\n_________________________________");
+            int choix = -1;
+            while (choix != 6)
+            {
+                Console.WriteLine("1 - Rajouter un nouveau patient\n2 - Supprimer un patient selon son id\n3 - Modifier toutes les infos du patient depuis son id(sauf son id)\n" +
+                    "4 - Afficher la liste de tout les patient\n5 - Afficher un patient selon son id\n6 - Quitter l'interface admin");
+                while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 6));
+                switch (choix)
+                {
+                    case 1:
+                        AjouterPatient(true);
+                        break;
+                    case 2:
+                        Admin.SupprimerPatient();
+                        break;
+                    case 3:
+                        Admin.UpdatePatient();
+                        break;
+                    case 4:
+                        Admin.AfficherAllPatients();
+                        break;
+                    case 5:
+                        Admin.AfficherPatientById();
+                        break;
+                }
+            }
+        }
         static void InterfaceSecretaire()
         {
             Console.WriteLine("Bienvenue dans l'interface Secrétaire\n______________________________________");
@@ -52,7 +84,7 @@ namespace ProjetHopital
             {
                 Console.WriteLine("1 - Rajouter un patient\n2 - Sauvegarder la liste d'attente\n3 - Charger/Afficher la liste d'attente\n" +
                     "4 - Nouvelle journée\n5 - Afficher les visites d'un patient\n6 - Afficher toutes les visites\n" +
-                    "7 Afficher le prochain patient\n" +
+                    "7 - Afficher le prochain patient\n" +
                     "8 - Afficher toutes les visites d'un médecin\n9 - Mettre à jour patient\n10 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
                 while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 10)) ;
                 if (choix == 10)
@@ -92,7 +124,7 @@ namespace ProjetHopital
             Console.WriteLine("Fermeture interface Secrétaire");
         }
 
-        static void AjouterPatient()
+        static void AjouterPatient(bool isAdmin = false)
         {
             Console.WriteLine("Veuillez saisir un identifiant:");
             int id;
@@ -130,15 +162,18 @@ namespace ProjetHopital
                 }
                 (new DaoPatient()).Insert(p);
             }
-            hopital.FileAttente.Enqueue(p);
+            if (!isAdmin)
+            {
+                hopital.FileAttente.Enqueue(p);
 
-            string dateHeureArrivee = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            //using (StreamWriter sw = new StreamWriter("patients.txt", true))
-            //{
-            //    sw.WriteLine($"{p.Id} {dateHeureArrivee}");
-            //}
+                string dateHeureArrivee = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                //using (StreamWriter sw = new StreamWriter("patients.txt", true))
+                //{
+                //    sw.WriteLine($"{p.Id} {dateHeureArrivee}");
+                //}
 
-            //Console.WriteLine("Patient ajouté à la file d'attente avec succès.");
+                //Console.WriteLine("Patient ajouté à la file d'attente avec succès.");
+            }
         }
 
         private static void AfficherFileAttente()
@@ -248,12 +283,9 @@ namespace ProjetHopital
             int choix = -1;
             while (choix != 5)
             {
-                Console.WriteLine(@"1 - Afficher l'état de la file d'attente\n
-                2 - Ajouter une ordonnance au patient actuel\n
-                3 - Sauvegarde de la BDD de la liste des visites\n
-                4 - Rendre la salle disponible\n
-                5 - Quitter l'interface médecin\n
-                Veuillez entrer votre choix: ");
+                Console.WriteLine("1 - Afficher l'état de la file d'attente\n2 - Ajouter une ordonnance au patient actuel\n" +
+                    "3 - Sauvegarde de la BDD de la liste des visites\n4 - Rendre la salle disponible\n" +
+                    "5 - Quitter l'interface médecin\nVeuillez entrer votre choix: ");
                 while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 5)) ;
                 if (choix == 5)
                     break;

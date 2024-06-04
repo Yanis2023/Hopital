@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin.cs" />
     <Compile Include="Authentification.cs" />
     <Compile Include="Hopital.cs" />
     <Compile Include="DaoAuthentification.cs" />
