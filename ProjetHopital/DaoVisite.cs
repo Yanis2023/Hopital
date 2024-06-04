@@ -82,29 +82,36 @@ namespace ProjetHopital
             connexion.Close();
             return v;
         }
-        public Visite SelectByMedecin(string nomMedecin)
+        public List<Visite> SelectByMedecin(string nomMedecin)
         {
-            Visite v = new Visite();
+            List<Visite> visites = new List<Visite>();
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "USE Hopital;SELECT * FROM visites WHERE medecin=" + nomMedecin;
+            string sql = "USE Hopital; SELECT * FROM visites WHERE medecin = @nomMedecin";
 
-
-            SqlConnection connexion = new SqlConnection(connexionString);
-            SqlCommand command = new SqlCommand(sql, connexion);
-
-            connexion.Open();
-
-            SqlDataReader reader = command.ExecuteReader();
-
-            if (reader.Read())
+            using (SqlConnection connexion = new SqlConnection(connexionString))
             {
+                SqlCommand command = new SqlCommand(sql, connexion);
+                command.Parameters.AddWithValue("@nomMedecin", nomMedecin);
 
-                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
-                                 reader.GetInt32(4), reader.GetDecimal(5));
+                connexion.Open();
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        visites.Add(new Visite(
+                            reader.GetInt32(0),
+                            reader.GetInt32(1),
+                            reader.GetDateTime(2).ToString(),
+                            reader.GetString(3),
+                            reader.GetInt32(4),
+                            reader.GetDecimal(5)
+                        ));
+                    }
+                }
             }
-            connexion.Close();
-            return v;
+            return visites;
         }
         public void Insert(Visite v)
         {
