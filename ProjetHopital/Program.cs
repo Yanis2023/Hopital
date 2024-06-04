@@ -34,7 +34,7 @@ namespace ProjetHopital
                 {
                     if (hopital.Salles.Count < metier)
                         for (int i = hopital.Salles.Count; i < metier; ++i)
-                            hopital.Salles.Add(new Salle(i));
+                            hopital.Salles.Add(new Salle(i + 1));
                     Console.WriteLine($"count {hopital.Salles.Count} metier {metier}");
                     hopital.SalleActive = metier - 1;
                     hopital.Salles[hopital.SalleActive].MedecinActuel = nom;
@@ -171,7 +171,7 @@ namespace ProjetHopital
             }
             if (!isAdmin)
             {
-                hopital.FileAttente.Enqueue(p);
+                hopital.FileAttente.Enqueue(new Tuple<Patient, DateTime>(p, DateTime.Now));
                 string dateHeureArrivee = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                 using (StreamWriter sw = new StreamWriter("patients.txt", true))
                 {
@@ -187,9 +187,10 @@ namespace ProjetHopital
         {
             StreamWriter sw = new StreamWriter("patients.txt", false);
                 
-            foreach (Patient p in hopital.FileAttente)
+            foreach (Tuple<Patient, DateTime> tp in hopital.FileAttente)
             {
-                string dateHeureArrivee = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                Patient p = tp.Item1;
+                string dateHeureArrivee = tp.Item2.ToString("dd/MM/yyyy HH:mm");
                 sw.WriteLine($"{p.Id} {dateHeureArrivee}");
                 Console.WriteLine($"Patient ID: {p.Id}, Nom: {p.Nom}, Prénom: {p.Prenom}, Age: {p.Age}, Adresse: {p.Adresse}, Téléphone: {p.Telephone}, Date d'arrivée: {dateHeureArrivee}");
             }
@@ -201,8 +202,9 @@ namespace ProjetHopital
         {
             Console.WriteLine("Liste des patients dans la file d'attente :");
 
-            foreach (Patient patient in hopital.FileAttente)
+            foreach (Tuple<Patient, DateTime> tp in hopital.FileAttente)
             {
+                Patient patient = tp.Item1;
                 Console.WriteLine($"ID: {patient.Id}, Nom: {patient.Nom}, Prénom: {patient.Prenom}, Âge: {patient.Age}, Adresse: {patient.Adresse}, Téléphone: {patient.Telephone}");
             }
         }
@@ -210,7 +212,7 @@ namespace ProjetHopital
         private static void AfficherProchainPatient()
         {
             Console.WriteLine("Prochain patient:");
-            Console.WriteLine(hopital.FileAttente.Peek());
+            Console.WriteLine(hopital.FileAttente.Peek().Item1);
         }
 
         public static void MettreAJourPatient()
@@ -425,7 +427,7 @@ namespace ProjetHopital
                     case 4:
                         hopital.Salles[hopital.SalleActive].RendreDispo();
                         break;
-                }                //do redirections there
+                }
             }
             Console.WriteLine("Fermeture interface Médecin");
         }
