@@ -50,9 +50,9 @@ namespace ProjetHopital
             int choix = -1;
             while (choix != 10)
             {
-                Console.WriteLine("1 - Rajouter un patient\n2 - Sauvegarder la liste d'attente\n3 - Charger/Afficher la liste d'attente\n" +
+                Console.WriteLine("1 - Rajouter un patient\n2 -  Sauvegarder la liste d'attente\n3 - Charger/Afficher la liste d'attente\n" +
                     "4 - Nouvelle journée\n5 - Afficher les visites d'un patient\n6 - Afficher toutes les visites\n" +
-                    "7 Afficher le prochain patient\n" +
+                    "7 - Afficher le prochain patient\n" +
                     "8 - Afficher toutes les visites d'un médecin\n9 - Mettre à jour patient\n10 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
                 while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 10)) ;
                 if (choix == 10)
@@ -64,7 +64,7 @@ namespace ProjetHopital
                         AjouterPatient();
                         break;
                     case 2:
-                        
+                        SauvegarderFileDAttente();
                         break;
                     case 3:
                         AfficherFileAttente();
@@ -91,6 +91,8 @@ namespace ProjetHopital
             }
             Console.WriteLine("Fermeture interface Secrétaire");
         }
+
+
 
         static void AjouterPatient()
         {
@@ -133,13 +135,28 @@ namespace ProjetHopital
             hopital.FileAttente.Enqueue(p);
 
             string dateHeureArrivee = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            //using (StreamWriter sw = new StreamWriter("patients.txt", true))
-            //{
-            //    sw.WriteLine($"{p.Id} {dateHeureArrivee}");
-            //}
+            using (StreamWriter sw = new StreamWriter("patients.txt", true))
+            {
+                sw.WriteLine($"{p.Id} {dateHeureArrivee}");
+            }
 
-            //Console.WriteLine("Patient ajouté à la file d'attente avec succès.");
+            Console.WriteLine("Patient ajouté à la file d'attente avec succès.");
         }
+
+
+        private static void SauvegarderFileDAttente()
+        {
+            StreamWriter sw = new StreamWriter("patients.txt", false);
+                
+            foreach (Patient p in hopital.FileAttente)
+            {
+                string dateHeureArrivee = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                sw.WriteLine($"{p.Id} {dateHeureArrivee}");
+                Console.WriteLine($"Patient ID: {p.Id}, Nom: {p.Nom}, Prénom: {p.Prenom}, Age: {p.Age}, Adresse: {p.Adresse}, Téléphone: {p.Telephone}, Date d'arrivée: {dateHeureArrivee}");
+            }
+                Console.WriteLine("Sauvegarde réussie.");
+        }
+
 
         private static void AfficherFileAttente()
         {
