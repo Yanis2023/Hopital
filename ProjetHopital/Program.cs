@@ -80,7 +80,10 @@ namespace ProjetHopital
                     case 7:
                         Admin.AfficherNombreVisiteMedecin();
                         break;
-                    case 8: //SELECT COUNT(medecin) FROM visites WHERE medecin = input medecin AND date BETWEEN dateMin AND dateMax
+                    case 8:
+                        Admin.AfficherNombreVisiteMedecinDate();
+                        break;
+                    default:
                         break;
                 }
             }
