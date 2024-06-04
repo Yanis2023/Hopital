@@ -186,6 +186,52 @@ namespace ProjetHopital
             return visites;
         }
 
+        public string SelectNbVisiteMedecin(string medecin)
+        {
+            string result = "MEDECIN  NOMBRE_VISITES\n";
+
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT medecin, COUNT(medecin) as NbVisites  FROM visites WHERE medecin='" + medecin + "' GROUP BY medecin";
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                result += reader["medecin"] + "\t"  + reader["NbVisites"] + "\n";
+            }
+
+            connexion.Close();
+            return result;
+        }
+        public string SelectNbVisiteSalleMedecin()
+        {
+            string result= "MEDECIN  NUMERO_SALLE  NOMBRE_VISITES\n";
+          
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT medecin, num_salle, COUNT(medecin) as NbVisites FROM visites GROUP BY medecin, num_salle ORDER BY num_salle, medecin ASC";
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                result += reader["medecin"] + "\t" + reader["num_salle"] + "\t" + reader["NbVisites"] +"\n";
+            }
+
+            connexion.Close();
+            return result;
+        }
         public void Insert(Visite v)
         {
             string connexionString = InfoSql.CONNEXION_INFO;

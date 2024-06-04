@@ -74,9 +74,11 @@ namespace ProjetHopital
                     case 5:
                         Admin.AfficherPatientById();
                         break;
-                    case 6: //SELECT medecin, num_salle, COUNT(medecin) FROM visites GROUP BY medecin, num_salle
+                    case 6:
+                        Admin.AfficherNombreVisiteSalleMedecin();
                         break;
-                    case 7: //SELECT COUNT(medecin) FROM visites WHERE medecin = input
+                    case 7:
+                        Admin.AfficherNombreVisiteMedecin();
                         break;
                     case 8: //SELECT COUNT(medecin) FROM visites WHERE medecin = input medecin AND date BETWEEN dateMin AND dateMax
                         break;

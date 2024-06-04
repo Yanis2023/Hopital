@@ -61,5 +61,20 @@ namespace ProjetHopital
             else
                 Console.WriteLine("Pas de patient avec cet identifiant");
         }
+
+        public static void AfficherNombreVisiteSalleMedecin()
+        {
+            DaoVisite daoVisite = new DaoVisite();
+            Console.WriteLine("Nombre de visites par salle et par Médecin :");
+            Console.WriteLine(daoVisite.SelectNbVisiteSalleMedecin());
+        }
+
+        public static void AfficherNombreVisiteMedecin()
+        {
+            Console.WriteLine("Veuillez saisir le nom du medecin:");
+            string medecin = Console.ReadLine();
+            DaoVisite daoVisite = new DaoVisite();
+            Console.WriteLine(daoVisite.SelectNbVisiteMedecin(medecin));
+        }
     }
 }
