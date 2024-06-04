@@ -224,7 +224,31 @@ namespace ProjetHopital
             }
             return visites;
         }
+        //SELECT COUNT(medecin) FROM visites WHERE medecin = input medecin AND date BETWEEN dateMin AND dateMax
+        public string SelectNbVisiteMedecinDate(string medecin, string dateMin, string dateMax)
+        {
+            string result = "MEDECIN  NOMBRE_VISITES\n";
 
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT medecin, COUNT(medecin) as NbVisites  " +
+                "FROM visites WHERE medecin='" + medecin + "' AND date BETWEEN '"+ dateMin+"' and '" + dateMax +"' GROUP BY medecin";
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                result += reader["medecin"] + "\t" + reader["NbVisites"] + "\n";
+            }
+
+            connexion.Close();
+            return result;
+        }
         public string SelectNbVisiteMedecin(string medecin)
         {
             string result = "MEDECIN  NOMBRE_VISITES\n";

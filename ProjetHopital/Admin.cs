@@ -76,5 +76,18 @@ namespace ProjetHopital
             DaoVisite daoVisite = new DaoVisite();
             Console.WriteLine(daoVisite.SelectNbVisiteMedecin(medecin));
         }
+        public static void AfficherNombreVisiteMedecinDate()
+        {
+            Console.WriteLine("Veuillez saisir le nom du medecin:");
+            string medecin = Console.ReadLine();
+            Console.WriteLine("Veuillez saisir la date Min:");
+            string dateMin = Console.ReadLine();
+            Console.WriteLine("Veuillez saisir la date Max:");
+            string dateMax = Console.ReadLine();
+
+            DaoVisite daoVisite = new DaoVisite();
+            Console.WriteLine(daoVisite.SelectNbVisiteMedecinDate(medecin, dateMin, dateMax));
+
+        }
     }
 }
