@@ -48,7 +48,7 @@ namespace ProjetHopital
         {
             Console.WriteLine("Bienvenue dans l'interface Secrétaire\n______________________________________");
             int choix = -1;
-            while (choix != 8)
+            while (choix != 10)
             {
                 Console.WriteLine("1 - Rajouter un patient\n2 - Sauvegarder la liste d'attente\n3 - Charger/Afficher la liste d'attente\n" +
                     "4 - Nouvelle journée\n5 - Afficher les visites d'un patient\n6 - Afficher toutes les visites\n" +
@@ -76,13 +76,13 @@ namespace ProjetHopital
                         AfficherVisitesPatient();
                         break;
                     case 6:
-                        
+                        AfficherToutesLesVisites();
                         break;
                     case 7:
                         AfficherProchainPatient();
                         break;
                     case 8:
-
+                        AfficherToutesVisitesDUnMedecin();
                         break;
                     case 9:               
                         MettreAJourPatient();
@@ -143,27 +143,11 @@ namespace ProjetHopital
 
         private static void AfficherFileAttente()
         {
-            string filePath = "patients.txt";
-
             Console.WriteLine("Liste des patients dans la file d'attente :");
-            if (!File.Exists(filePath))
+
+            foreach (Patient patient in hopital.FileAttente)
             {
-                foreach (Patient p in hopital.FileAttente)
-                    Console.WriteLine(p);
-                //Console.WriteLine("Le fichier patients.txt n'existe pas.");
-                return;
-            }
-
-            using (StreamReader sr = new StreamReader(filePath))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    
-                    string[] parts = line.Split(' ');
-
-
-                }
+                Console.WriteLine($"ID: {patient.Id}, Nom: {patient.Nom}, Prénom: {patient.Prenom}, Âge: {patient.Age}, Adresse: {patient.Adresse}, Téléphone: {patient.Telephone}");
             }
         }
 
@@ -208,14 +192,43 @@ namespace ProjetHopital
 
         private static void AfficherToutesLesVisites()
         {
-            //TODO
-            throw new NotImplementedException();
+            DaoVisite daoVisite = new DaoVisite();
+            List<Visite> visites = daoVisite.SelectAll();
+
+            if (visites.Count == 0)
+            {
+                Console.WriteLine("Aucune visite trouvée.");
+            }
+            else
+            {
+                Console.WriteLine("Liste de toutes les visites :");
+                foreach (Visite visite in visites)
+                {
+                    Console.WriteLine($"ID Visite: {visite.IdVisite}, Patient ID: {visite.IdPatient}, Médecin: {visite.NomMedecin}, Date: {visite.Date}, Tarif: {visite.Tarif}");
+                }
+            }
         }
 
         private static void AfficherToutesVisitesDUnMedecin()
         {
-            //TODO
-            throw new NotImplementedException();
+            Console.WriteLine("Veuillez saisir le nom du médecin:");
+            string nomMedecin = Console.ReadLine();
+
+            DaoVisite daoVisite = new DaoVisite();
+            List<Visite> visites = daoVisite.SelectByMedecin(nomMedecin);
+
+            if (visites.Count == 0)
+            {
+                Console.WriteLine("Aucune visite trouvée pour le médecin: " + nomMedecin);
+            }
+            else
+            {
+                Console.WriteLine("Liste de toutes les visites du médecin " + nomMedecin + " :");
+                foreach (Visite visite in visites)
+                {
+                    Console.WriteLine($"ID Visite: {visite.IdVisite}, Patient ID: {visite.IdPatient}, Date: {visite.Date}, Numéro de Salle: {visite.NumSalle}, Tarif: {visite.Tarif}");
+                }
+            }
         }
 
 
