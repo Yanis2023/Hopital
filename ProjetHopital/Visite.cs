@@ -10,8 +10,8 @@ namespace ProjetHopital
     {
         private int idVisite;
         private int idPatient;
-        private string nomMedecin;
         private string date;
+        private string nomMedecin;
         private int numSalle;
         private decimal tarif;
 

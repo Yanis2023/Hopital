@@ -52,7 +52,7 @@ namespace ProjetHopital
             if (reader.Read())
             {
 
-                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3),
+                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
                                  reader.GetInt32(4), reader.GetDecimal(5));
             }
             connexion.Close();
@@ -76,7 +76,7 @@ namespace ProjetHopital
             if (reader.Read())
             {
 
-                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3),
+                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
                                  reader.GetInt32(4), reader.GetDecimal(5));
             }
             connexion.Close();
