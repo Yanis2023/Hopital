@@ -21,7 +21,7 @@ namespace ProjetHopital
             }
         }
 
-        public Queue<Patient> FileAttente { get; private set; }
+        public Queue<Tuple<Patient, DateTime>> FileAttente { get; private set; }
         public DaoPatient DaoPatient { get; private set; }
         public DaoVisite DaoVisite { get; private set; }
         public List<Salle> Salles { get => salles; set => salles = value; }
@@ -29,13 +29,20 @@ namespace ProjetHopital
 
         public void SendNewPatient()
         {
-            salles[SalleActive].PatientActuel = FileAttente.Dequeue();
-            Console.WriteLine("sent " + salles[SalleActive].PatientActuel + "en salle");
+            if (FileAttente.Count > 0)
+            {
+                Tuple<Patient, DateTime> tuple = FileAttente.Dequeue();
+                salles[SalleActive].PatientActuel = tuple.Item1;
+                salles[SalleActive].ArriveePatient = tuple.Item2;
+                Console.WriteLine("sent " + salles[SalleActive].PatientActuel + "en salle");
+            }
+            else
+                Console.WriteLine("Plus de patient dans la file d'attente");
         }
 
         private Hopital()
         {
-            FileAttente = new Queue<Patient>();
+            FileAttente = new Queue<Tuple<Patient, DateTime>>();
             salles = new List<Salle>();
         }
     }

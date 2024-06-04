@@ -38,7 +38,8 @@ CREATE TABLE visites (
     medecin NVARCHAR(50),
     num_salle INT,
     tarif DECIMAL(10, 2),
-    FOREIGN KEY (idpatient) REFERENCES patients(id)
+    FOREIGN KEY (idpatient) REFERENCES patients(id),
+    dureeAttente FLOAT
 );
 
 
@@ -55,14 +56,14 @@ INSERT INTO patients (nom, prenom, age, adresse, telephone) VALUES
 ('Wonka', 'Willy', 25, '23 par ici', '0604128549');
 
 
-INSERT INTO visites (idpatient, date, medecin, num_salle, tarif) VALUES
-(1, '2024-06-05', 'Dr. Maboul', 1, 25.00),
-(2, '2024-06-04', 'Dr. Who', 2, 25.00),
-(3, '2024-06-03', 'Dr. Maboul', 1, 25.00);
+INSERT INTO visites (idpatient, date, medecin, num_salle, tarif, dureeAttente) VALUES
+(1, '2024-06-05 15:06', 'Dr. Maboul', 1, 25.00, 96.0),
+(2, '2024-06-04 16:00', 'Dr. Who', 2, 25.00, 15.0),
+(3, '2024-06-03 18:30', 'Dr. Maboul', 1, 25.00, 162.0);
 
 INSERT INTO authentification (login, password, nom, metier) VALUES
 ('secretaire', 'secretaire123', 'Secretaire', 0),
 ('medecin1', 'medecin123', 'Dr. Maboul', 1),
-('medecin2', 'medecin123', 'Dr. Who', 2), ('admin', 'admin123', 'Administrateur', -1);
-
+('medecin2', 'medecin123', 'Dr. Who', 2),
+('admin', 'admin123', 'Administrateur', -1);
 
