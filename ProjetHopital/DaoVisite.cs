@@ -34,6 +34,30 @@ namespace ProjetHopital
             connexion.Close();
             return liste;
         }
+        public Visite SelectById(int id)
+        {
+            Visite v = new Visite();
+            string connexionString = InfoSql.CONNEXION_INFO;
+
+            string sql = "USE Hopital;SELECT * FROM visites WHERE id=" + id;
+
+
+            SqlConnection connexion = new SqlConnection(connexionString);
+            SqlCommand command = new SqlCommand(sql, connexion);
+
+            connexion.Open();
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+
+                v = new Visite(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2).ToString(), reader.GetString(3),
+                                 reader.GetInt32(4), reader.GetDecimal(5));
+            }
+            connexion.Close();
+            return v;
+        }
         public Visite SelectByIdPatient(int idPatient)
         {
             Visite v = new Visite();
@@ -58,12 +82,12 @@ namespace ProjetHopital
             connexion.Close();
             return v;
         }
-        public Visite SelectById(int id)
+        public Visite SelectByMedecin(string nomMedecin)
         {
             Visite v = new Visite();
             string connexionString = InfoSql.CONNEXION_INFO;
 
-            string sql = "USE Hopital;SELECT * FROM visites WHERE id=" + id;
+            string sql = "USE Hopital;SELECT * FROM visites WHERE medecin=" + nomMedecin;
 
 
             SqlConnection connexion = new SqlConnection(connexionString);
