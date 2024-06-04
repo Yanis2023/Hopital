@@ -89,10 +89,10 @@ namespace ProjetHopital
             int choix = -1;
             while (choix != 10)
             {
-                Console.WriteLine("1 - Rajouter un patient\n2 -  Sauvegarder la liste d'attente\n3 - Charger/Afficher la liste d'attente\n" +
-                    "4 - Nouvelle journée\n5 - Afficher les visites d'un patient\n6 - Afficher toutes les visites\n" +
-                    "7 - Afficher le prochain patient\n" +
-                    "8 - Afficher toutes les visites d'un médecin\n9 - Mettre à jour patient\n10 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
+                Console.WriteLine("1  - Rajouter un patient\n2  - Sauvegarder la liste d'attente\n3  - Charger/Afficher la liste d'attente\n" +
+                    "4  - Nouvelle journée\n5  - Afficher les visites d'un patient\n6  - Afficher toutes les visites\n" +
+                    "7  - Afficher le prochain patient\n" +
+                    "8  - Afficher toutes les visites d'un médecin\n9  - Mettre à jour patient\n10 - Quitter l'interface secrétaire\nVeuillez entrer votre choix: ");
                 while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 10)) ;
                 if (choix == 10)
                     break;
@@ -238,13 +238,113 @@ namespace ProjetHopital
         {
             Console.WriteLine("Saisissez un identifiant : ");
             int id = Convert.ToInt32(Console.ReadLine());
-          
+
             DaoVisite daoVisite = new DaoVisite();
-           
-            Console.WriteLine(daoVisite.SelectByIdPatient(id).ToString());
-                  
+            List<Visite> visites = daoVisite.SelectByIdPatient(id);
+
+            if (visites.Count == 0)
+            {
+                Console.WriteLine("Aucune visite trouvée.");
+            }
+            else
+            {
+                Console.WriteLine("Liste desvisites :");
+                foreach (Visite visite in visites)
+                {
+                    Console.WriteLine($"ID Visite: {visite.IdVisite}, Patient ID: {visite.IdPatient}, Médecin: {visite.NomMedecin}, Date: {visite.Date}, Tarif: {visite.Tarif}");
+                }
+            }
+
+            int choix = -1;
+            while (choix != 5)
+            {
+                Console.WriteLine("Visualisation des visites d'un patient\n______________________________________");
+                Console.WriteLine("1 - Visites triées par date+heure\n2 - Visites triées par medecins\n3 - Nombre de visites pour un patient\n" +
+                    "4 - Nombre de visites pour un patient donné entre 2 dates\n5 - Quitter le sous-interface secrétaire\nVeuillez entrer votre choix: ");
+                while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 10)) ;
+                if (choix == 10)
+                    break;
+
+                switch (choix)
+                {
+                    case 1:
+                        VisitesTrieesParDateEtHeure(id);
+                        break;
+                    case 2:
+                        VisitesTrieesParMedecin(id);
+                        break;
+                    case 3:
+                        NombreVisitePourUnPatient(id);
+                        break;
+                    case 4:
+
+                        break;
+                }
+            }
+            Console.WriteLine("Fermeture interface Secrétaire");
+
         }
 
+        private static void VisitesTrieesParDateEtHeure(int id)
+        {
+            DaoVisite daoVisite = new DaoVisite();
+            List<Visite> visites = daoVisite.SelectVisitePatientByDate(id);
+
+            if (visites.Count == 0)
+            {
+                Console.WriteLine("Aucune visite trouvée.");
+            }
+            else
+            {
+                Console.WriteLine("Liste des visites :");
+                foreach (Visite visite in visites)
+                {
+                    Console.WriteLine($"ID Visite: {visite.IdVisite}, Patient ID: {visite.IdPatient}, Médecin: {visite.NomMedecin}, Date: {visite.Date}, Tarif: {visite.Tarif}");
+                }
+            }
+        }
+
+        private static void VisitesTrieesParMedecin(int id)
+        {
+            DaoVisite daoVisite = new DaoVisite();
+            List<Visite> visites = daoVisite.SelectVisitePatientByMedecin(id);
+
+            if (visites.Count == 0)
+            {
+                Console.WriteLine("Aucune visite trouvée.");
+            }
+            else
+            {
+                Console.WriteLine("Liste des visites :");
+                foreach (Visite visite in visites)
+                {
+                    Console.WriteLine($"ID Visite: {visite.IdVisite}, Patient ID: {visite.IdPatient}, Médecin: {visite.NomMedecin}, Date: {visite.Date}, Tarif: {visite.Tarif}");
+                }
+            }
+        }
+
+        private static void NombreVisitePourUnPatient(int id)
+        {
+            DaoVisite daoVisite = new DaoVisite();
+            List<Visite> visites = daoVisite.SelectByIdPatient(id);
+
+
+            Console.WriteLine("Le patient a effectué : " + visites.Count + " visites");
+        }
+
+        private static void NombreVisitePourUnPatientEntre2Dates(int id)
+        {
+            Console.WriteLine("Saisissez une premiere date : ");
+            DateTime date1 = Convert.ToDateTime(Console.ReadLine());
+            Console.WriteLine("Saisissez une premiere date : ");
+            DateTime date2 = Convert.ToDateTime(Console.ReadLine());
+
+            DaoVisite daoVisite = new DaoVisite();
+            //List<Visite> visites = daoVisite.SelectByIdPatientBetween2Dates(id, date1, date2);
+
+
+            //Console.WriteLine("Le patient a effectué : " + visites.Count + " visites entre le " + date1 + " et le " +date2);
+        }
 
         private static void AfficherToutesLesVisites()
         {
