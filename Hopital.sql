@@ -34,7 +34,7 @@ CREATE TABLE patients (
 CREATE TABLE visites (
     id INT PRIMARY KEY IDENTITY(1,1),
     idpatient INT,
-    date DATE,
+    date DATETIME,
     medecin NVARCHAR(50),
     num_salle INT,
     tarif DECIMAL(10, 2),
@@ -63,6 +63,6 @@ INSERT INTO visites (idpatient, date, medecin, num_salle, tarif) VALUES
 INSERT INTO authentification (login, password, nom, metier) VALUES
 ('secretaire', 'secretaire123', 'Secretaire', 0),
 ('medecin1', 'medecin123', 'Dr. Maboul', 1),
-('medecin2', 'medecin123', 'Dr. Who', 2);
+('medecin2', 'medecin123', 'Dr. Who', 2), ('admin', 'admin123', 'Administrateur', -1);
 
 
