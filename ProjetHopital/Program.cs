@@ -12,9 +12,6 @@ namespace ProjetHopital
         private static Hopital hopital = Hopital.Instance;
         static void Main(string[] args)
         {
-            DaoVisite daoV = new DaoVisite();
-            Visite v = new Visite (16, 3, "Praud", "1985-02-12", 2, 30);
-            daoV.Update(v);
             Console.WriteLine("Bienvenue à l'hopital");
             Login();
         }
@@ -54,10 +51,11 @@ namespace ProjetHopital
 
             Console.WriteLine("Bienvenue dans l'interface Admin\n_________________________________");
             int choix = -1;
-            while (choix != 6)
+            while (choix != 9)
             {
                 Console.WriteLine("1 - Rajouter un nouveau patient\n2 - Supprimer un patient selon son id\n3 - Modifier toutes les infos du patient depuis son id(sauf son id)\n" +
-                    "4 - Afficher la liste de tout les patient\n5 - Afficher un patient selon son id\n6 - Quitter l'interface admin");
+                    "4 - Afficher la liste de tout les patient\n5 - Afficher un patient selon son id\n6 - Afficher nb visites par salle et par medecin\n" +
+                    "7 - Nb visite medecin depuis le debut\n8 - Nb visite medecin entre date x et date y\n9 - Quitter l'interface admin");
                 while (!Int32.TryParse(Console.ReadLine(), out choix) && (choix < 1 || choix > 6));
                 switch (choix)
                 {
@@ -75,6 +73,12 @@ namespace ProjetHopital
                         break;
                     case 5:
                         Admin.AfficherPatientById();
+                        break;
+                    case 6: //SELECT medecin, num_salle, COUNT(medecin) FROM visites GROUP BY medecin, num_salle
+                        break;
+                    case 7: //SELECT COUNT(medecin) FROM visites WHERE medecin = input
+                        break;
+                    case 8: //SELECT COUNT(medecin) FROM visites WHERE medecin = input medecin AND date BETWEEN dateMin AND dateMax
                         break;
                 }
             }
@@ -105,7 +109,8 @@ namespace ProjetHopital
                         AfficherFileAttente();
                         break;
                     case 4:
-                        
+                        foreach (Salle s in hopital.Salles)
+                            s.SauvegarderVisites();
                         break;
                     case 5:
                         AfficherVisitesPatient();
@@ -133,7 +138,6 @@ namespace ProjetHopital
             int id;
             while (!Int32.TryParse(Console.ReadLine(), out id)) ;
             Patient p = (new DaoPatient()).SelectById(id);
-            //TODO check si id existe dans la db
             if (p.Id == id)
                 Console.WriteLine("Patient: [" + p + "]");
             else
@@ -168,7 +172,6 @@ namespace ProjetHopital
             if (!isAdmin)
             {
                 hopital.FileAttente.Enqueue(p);
-
                 string dateHeureArrivee = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
                 using (StreamWriter sw = new StreamWriter("patients.txt", true))
                 {
