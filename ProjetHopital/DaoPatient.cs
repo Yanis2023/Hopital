@@ -73,7 +73,13 @@ namespace ProjetHopital
             connexion.Open();
             // Excecution de la requête
             command.ExecuteNonQuery();
-
+            command = connexion.CreateCommand();
+            command.CommandText = "USE Hopital;SELECT id FROM patients WHERE nom = @nom AND prenom=@prenom";
+            command.Parameters.Add("nom", SqlDbType.NVarChar).Value = p.Nom;
+            command.Parameters.Add("prenom", SqlDbType.NVarChar).Value = p.Prenom;
+            SqlDataReader reader = command.ExecuteReader();
+            if (reader.Read())
+                p.Id = reader.GetInt32(0);
             Console.WriteLine("Insertion patient ok");
 
             connexion.Close();
