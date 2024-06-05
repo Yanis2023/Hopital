@@ -252,7 +252,8 @@ namespace ProjetHopital
         public static void MettreAJourPatient()
         {       
             Console.WriteLine("Saisissez un identifiant : ");
-            int id = Convert.ToInt32(Console.ReadLine());
+            int id;
+            while (!Int32.TryParse(Console.ReadLine(), out id)) ;
             Console.WriteLine("Saisissez le nouveau numéro de téléphone : ");
             string telephone = Console.ReadLine();
             Console.WriteLine("Saisissez la nouvelle adresse : ");
@@ -273,7 +274,8 @@ namespace ProjetHopital
         private static void AfficherVisitesPatient()
         {
             Console.WriteLine("Saisissez un identifiant : ");
-            int id = Convert.ToInt32(Console.ReadLine());
+            int id;
+            while (!Int32.TryParse(Console.ReadLine(), out id)) ;
 
             DaoVisite daoVisite = new DaoVisite();
             List<Visite> visites = daoVisite.SelectByIdPatient(id);
